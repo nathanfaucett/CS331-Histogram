@@ -70,9 +70,9 @@ public class Histogram {
 		}
 	}
 
-    public static void main(String[] args) {
-        _scanner = new Scanner(System.in);
-        _distribution = new HashMap<String, Integer>();
+	public static void main(String[] args) {
+		_scanner = new Scanner(System.in);
+		_distribution = new HashMap<String, Integer>();
 
 		System.out.println("Enter Integer between 1 and " + _max + ": ");
 
@@ -88,5 +88,5 @@ public class Histogram {
 				Histogram.addNumber(number);
 			}
 		}
-    }
+	}
 }
