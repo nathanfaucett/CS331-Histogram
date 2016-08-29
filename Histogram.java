@@ -74,13 +74,17 @@ public class Histogram {
 		_scanner = new Scanner(System.in);
 		_distribution = new HashMap<String, Integer>();
 
-		System.out.println("Enter Integer between 1 and " + _max + ": ");
+		System.out.println("\nHistogram:\n  Enter numbers, print the histogram by entering p or print, q or quit exits the program\n");
+		System.out.println("Enter Integers between 1 and " + _max + ": ");
 
 		while (true) {
 			String cmd = Histogram.getCmd();
 
 			if (cmd != null) {
-				if (cmd.equals("q") || cmd.equals("Q") || cmd.equals("quit") || cmd.equals("QUIT")) {
+				if (cmd.equals("q") || cmd.equals("Q") || cmd.equals("quit") || cmd.equals("Quit")) {
+					break;
+				}
+				if (cmd.equals("p") || cmd.equals("P") || cmd.equals("print") || cmd.equals("Print")) {
 					Histogram.printTable();
 				}
 			} else {
