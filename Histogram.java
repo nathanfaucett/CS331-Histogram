@@ -1,11 +1,10 @@
 import java.util.Scanner;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public class Histogram {
 	private static Scanner _scanner;
-	private static Map<String, Integer> _distribution;
+	private static ArrayList<Integer> _distribution;
 	private static int _max = 100;
 
 	static String getCmd() {
@@ -35,26 +34,32 @@ public class Histogram {
 	}
 
 	private static void addNumber(int number) {
-		String string = Integer.toString(number);
-		int first = Character.getNumericValue(string.charAt(string.length() - 1));
-		int second = 0;
+		int index = 0;
 
 		if (number > 10) {
-			second = Character.getNumericValue(string.charAt(string.length() - 2));
+			if (number >= _max) {
+				index = (_max / 10) - 1;
+			} else {
+				String string = Integer.toString(number);
+				int first = new Integer(Character.getNumericValue(string.charAt(string.length() - 1)));
+				index = new Integer(Character.getNumericValue(string.charAt(string.length() - 2)));
+
+				if (first == 0) {
+					index -= 1;
+				}
+			}
 		}
 
-		String min = second == 0 ? "01" : second + "1";
-		String max = second == 0 ? "10" : (second + 1) + "0";
-		String range = min + "-" + max;
+		_distribution.set(index, _distribution.get(index) + 1);
+	}
 
-		if (_distribution.containsKey(range)) {
-			_distribution.put(range, _distribution.get(range) + 1);
-		} else {
-			_distribution.put(range, 1);
+	private static void addRandomNumbers(int count) {
+		while (count-- > 0) {
+			addNumber(1 + (int) (Math.random() * _max));
 		}
 	}
 
-	private static String printAsterisk(int count) {
+	private static String getAsterisk(int count) {
 		String asterisk = "";
 
 		while (count-- > 0) {
@@ -64,17 +69,36 @@ public class Histogram {
 		return asterisk;
 	}
 
+	private static String getRange(int index) {
+		String range = ((index * 10) + 1) + "-" + ((index * 10) + 10);
+
+		if (range.length() < 5) {
+			return "0" + range + " ";
+		} else if (range.length() < 6) {
+			return range + " ";
+		} else {
+			return range;
+		}
+	}
+
 	private static void printTable() {
-		for (Map.Entry<String, Integer> entry : _distribution.entrySet()) {
-            System.out.println(entry.getKey() + " | " + Histogram.printAsterisk(entry.getValue()));
+		int index = 0;
+
+		for (Integer count : _distribution) {
+            System.out.println(getRange(index) + " | " + getAsterisk(count));
+			index++;
 		}
 	}
 
 	public static void main(String[] args) {
 		_scanner = new Scanner(System.in);
-		_distribution = new HashMap<String, Integer>();
 
-		System.out.println("\nHistogram:\n  Enter numbers, print the histogram by entering p or print, q or quit exits the program\n");
+		_distribution = new ArrayList<Integer>();
+		for (int i = 0, il = _max / 10; i < il; i++) {
+			_distribution.add(0);
+		}
+
+		System.out.println("\nHistogram:\n\tprint the histogram by entering p or print\n\tr or random will add "+ 10 +" random numbers\n\tq or quit exits the program\n");
 		System.out.println("Enter Integers between 1 and " + _max + ": ");
 
 		while (true) {
@@ -83,6 +107,9 @@ public class Histogram {
 			if (cmd != null) {
 				if (cmd.equals("q") || cmd.equals("Q") || cmd.equals("quit") || cmd.equals("Quit")) {
 					break;
+				}
+				if (cmd.equals("r") || cmd.equals("R") || cmd.equals("random") || cmd.equals("Random")) {
+					addRandomNumbers(10);
 				}
 				if (cmd.equals("p") || cmd.equals("P") || cmd.equals("print") || cmd.equals("Print")) {
 					Histogram.printTable();
