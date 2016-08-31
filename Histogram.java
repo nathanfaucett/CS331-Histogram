@@ -54,9 +54,13 @@ public class Histogram {
 	}
 
 	private static void addRandomNumbers(int count) {
+        System.out.print("Adding ");
 		while (count-- > 0) {
-			addNumber(1 + (int) (Math.random() * _max));
+            int r = 1 + ((int) (Math.random() * _max));
+            System.out.print(r + ", ");
+			addNumber(r);
 		}
+        System.out.println("");
 	}
 
 	private static String getAsterisk(int count) {
@@ -99,7 +103,7 @@ public class Histogram {
 		}
 
 		System.out.println("\nHistogram:\n\tprint the histogram by entering p or print\n\tr or random will add "+ 10 +" random numbers\n\tq or quit exits the program\n");
-		System.out.println("Enter Integers between 1 and " + _max + ": ");
+		System.out.println("Enter Integers between 1 and " + _max + " or one of the above commands: ");
 
 		while (true) {
 			String cmd = Histogram.getCmd();
@@ -107,13 +111,13 @@ public class Histogram {
 			if (cmd != null) {
 				if (cmd.equals("q") || cmd.equals("Q") || cmd.equals("quit") || cmd.equals("Quit")) {
 					break;
-				}
-				if (cmd.equals("r") || cmd.equals("R") || cmd.equals("random") || cmd.equals("Random")) {
+				} else if (cmd.equals("r") || cmd.equals("R") || cmd.equals("random") || cmd.equals("Random")) {
 					addRandomNumbers(10);
-				}
-				if (cmd.equals("p") || cmd.equals("P") || cmd.equals("print") || cmd.equals("Print")) {
+				} else if (cmd.equals("p") || cmd.equals("P") || cmd.equals("print") || cmd.equals("Print")) {
 					Histogram.printTable();
-				}
+				} else {
+                    System.out.println("Invalid Command");
+                }
 			} else {
 				int number = Histogram.getShort();
 				Histogram.addNumber(number);
